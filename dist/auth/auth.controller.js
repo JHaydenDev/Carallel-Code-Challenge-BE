@@ -19,8 +19,8 @@ let AuthController = class AuthController {
     handleLogin() {
         return { msg: 'Google Authentication' };
     }
-    handleRedirect() {
-        return { msg: 'OK' };
+    handleRedirect(res) {
+        res.redirect('http://localhost:3000/articles');
     }
     user(request) {
         console.log(request.user);
@@ -43,8 +43,9 @@ __decorate([
 __decorate([
     (0, common_1.Get)('google/redirect'),
     (0, common_1.UseGuards)(Guards_1.GoogleAuthGuard),
+    __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "handleRedirect", null);
 __decorate([

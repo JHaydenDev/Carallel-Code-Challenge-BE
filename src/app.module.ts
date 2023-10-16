@@ -1,10 +1,17 @@
-import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { User } from './typeorm/entities/User';
+import {
+  Module,
+  NestModule,
+  MiddlewareConsumer,
+  RequestMethod,
+} from '@nestjs/common';
+
+import { AxiosMiddleware } from './middleware/axios.middleware';
 
 @Module({
   imports: [
@@ -24,4 +31,10 @@ import { User } from './typeorm/entities/User';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AxiosMiddleware) // Add AxiosMiddleware here
+      .forRoutes({ path: 'api/articles', method: RequestMethod.GET }); // Adjust the path as needed
+  }
+}
